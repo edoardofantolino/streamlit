@@ -31,10 +31,23 @@ st.title("Transaction Dashboard")
 
 st.metric("Numero Transazioni", len(df))
 
-st.metric(
-    "Volume Totale",
-    f"€ {df['amount'].sum():,.2f}"
-)
+if len(df) != 0:
+    st.metric(
+        "Volume Totale",
+        f"€ {df['amount'].sum():,.2f}"
+    )
+
+    st.subheader("Singola transazione")
+
+    single_volume = (
+        df.groupby("timestamp")["amount"]
+        .sum()
+        .reset_index()
+    )
+
+    st.line_chart(
+        single_volume.set_index("timestamp")
+    )
 
 
 # df = load_data()
