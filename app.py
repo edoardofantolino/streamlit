@@ -9,8 +9,6 @@ response = get_all_transactions()
 data = response.data
 df = pd.DataFrame(data)
 
-# from utils.loader import load_data
-
 st_autorefresh(
     interval=5000,
     key="refresh"
@@ -44,10 +42,10 @@ if len(df) != 0:
         single_volume.set_index("timestamp")
     )
 
-
-# df = load_data()
-
-
 if st.button("Simulate transactions"):
     st.write("Creating transaction")
     add_transaction()
+
+if st.button("Simulate a day"):
+    st.write("Creating transactions")
+    # add_transaction()
