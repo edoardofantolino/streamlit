@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from streamlit_autorefresh import st_autorefresh
+# from streamlit_autorefresh import st_autorefresh
 from services.db_functions import *
 from services.transaction_generator import *
 
@@ -11,10 +11,10 @@ data = response.data
 df = pd.DataFrame(data)
 
 
-st_autorefresh(
-    interval=60000,
-    key="refresh"
-)
+# st_autorefresh(
+#     interval=60000,
+#     key="refresh"
+# )
 
 st.set_page_config(
     page_title="Transaction Dashboard",
@@ -40,21 +40,23 @@ st.sidebar.header("Simulation")
 
 if st.sidebar.button("Single Transaction"):
     add_transaction()
-
-if st.sidebar.button("Simulate Day"):
-    simulate_day()
+    st.rerun()
 
 if st.sidebar.button("Simulate Day Fast"):
     simulate_day_fast()
+    st.rerun()
 
 if st.sidebar.button("Simulate Week Fast"):
     simulate_week_fast()
+    st.rerun()
 
 if st.sidebar.button("Simulate Single High Value Fraud"):
     single_anomalous_transaction_high_amount()
+    st.rerun()
 
 if st.sidebar.button("Simulate Multiple Low Value Fraud"):
     multiple_anomalous_transactions_low_amount()
+    st.rerun()
 
 
 
@@ -68,6 +70,8 @@ with col_tot_vol:
         "Volume Totale",
         f"€ {get_total_volume():,.2f}"
     )
+
+st.metric("Numero Transazioni ad Alto Volume Anomale", count_high_withdrawal_anomalies())
 
 
 
@@ -86,8 +90,6 @@ if not df.empty:
 
     cols = st.columns(3)
 
-
-    print(df)
     for i in range(3):
         if i == len(df):
             break
@@ -136,24 +138,24 @@ else:
 
 
 
-col1, col2, col3, col4 = st.columns(4)
+bottom_col1, bottom_col2, bottom_col3, bottom_col4 = st.columns(4)
 
-with col1:
-    if st.button("Simulate transactions"):
-        st.write("Creating transaction")
+with bottom_col1:
+    if st.button("Simulate transaction"):
         add_transaction()
+        st.rerun()
 
-with col2:
-    if st.button("Simulate a day"):
-        st.write("Creating transactions")
-        simulate_day()
-
-with col3:
+with bottom_col2:
     if st.button("Simulate a day fast"):
-        st.write("Creating transactions")
         simulate_day_fast()
+        st.rerun()
 
-with col4:
+with bottom_col3:
     if st.button("Simulate a week fast"):
-        st.write("Creating transactions")
         simulate_week_fast()
+        st.rerun()
+
+with bottom_col4:
+    if st.button("Simulate HV Fraud"):
+        single_anomalous_transaction_high_amount()
+        st.rerun()

@@ -1,10 +1,7 @@
-import uuid
 from datetime import datetime, timedelta
 from supabase import create_client
-import random
-import time
 import pandas as pd
-from services import transaction_generator
+
 
 url = "https://yinthengfapdhtvgidoi.supabase.co"
 key = "sb_publishable_P4Py0xWkBg2YAU5Wm0fpcw_Nj0--Ju9"
@@ -34,6 +31,21 @@ def get_transactions_lastweek():
     data = response.data
     df = pd.DataFrame(data)
     return df
+
+
+def count_high_withdrawal_anomalies():
+    totl_hv_anomalies = (
+        supabase
+        .rpc("count_high_withdrawal_anomalies")
+        .execute()
+        )
+
+    totl_hv_anomalies = totl_hv_anomalies.data
+    if totl_hv_anomalies != None:
+        return totl_hv_anomalies
+    return 0
+
+print(count_high_withdrawal_anomalies())
 
 
 def get_volume_per_filiale():
