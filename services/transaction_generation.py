@@ -7,9 +7,6 @@ url = "https://yinthengfapdhtvgidoi.supabase.co"
 key = "sb_publishable_P4Py0xWkBg2YAU5Wm0fpcw_Nj0--Ju9"
 supabase = create_client(url, key)
 
-response = supabase.table("transactions").select("*").execute()
-
-
 accounts = [
     "IT1234", "IT2345", "IT3456", "IT4567",
     "IT5678", "IT6789", "IT7890", "IT8901"
@@ -18,6 +15,11 @@ accounts = [
 # currencies = ["EUR", "USD"]
 currencies = ["EUR"]
 types = ["withdrawal", "deposit", "transfer"]
+
+
+def get_all_transactions():
+    return supabase.table("transactions").select("*").execute()
+
 
 def random_amount(tx_type):
 
