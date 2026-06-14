@@ -71,9 +71,13 @@ with col_tot_vol:
         f"€ {get_total_volume():,.2f}"
     )
 
-st.metric("Numero Transazioni ad Alto Volume Anomale", count_high_withdrawal_anomalies())
-
-
+fraud_count = count_high_withdrawal_anomalies()
+print(fraud_count)
+if fraud_count > 0:
+    if fraud_count == 1:
+        st.error("🚨 Una transazione ad Alto Volume Anomala")
+    else:
+        st.error(f"🚨 {fraud_count} transazioni ad Alto Volume Anomale")
 
 
 st.title("Top Filiali")

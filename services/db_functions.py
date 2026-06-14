@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from supabase import create_client
 import pandas as pd
 
-
 url = "https://yinthengfapdhtvgidoi.supabase.co"
 key = "sb_publishable_P4Py0xWkBg2YAU5Wm0fpcw_Nj0--Ju9"
 supabase = create_client(url, key)
