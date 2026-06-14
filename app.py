@@ -86,7 +86,12 @@ if not df.empty:
 
     cols = st.columns(3)
 
+
+    print(df)
     for i in range(3):
+        if i == len(df):
+            break
+        
         cols[i].metric(
             label=df["filiale_name"].iloc[i],
             value=f"€ {df['total_volume'].iloc[i]:,.2f}".replace(",", " "),

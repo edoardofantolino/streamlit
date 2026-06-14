@@ -136,7 +136,7 @@ def simulate_week_fast():
 
     transactions = []
     while current_timestamp < ending_time:
-        print(current_timestamp)
+        # print(current_timestamp)
 
         if current_timestamp.weekday() >= 5:
             delta_seconds = random.randint(60, 1800)
@@ -207,7 +207,7 @@ def multiple_anomalous_transactions_low_amount():
     while current_timestamp < ending_time:
         # print(current_timestamp)
         number_of_low_value_fraud_transactions += 1
-        delta_seconds = random.randint(1, 100)
+        delta_seconds = random.randint(1, 200)
         current_timestamp += timedelta(seconds=delta_seconds)
 
         tx_type = types[0]
