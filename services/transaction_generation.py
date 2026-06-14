@@ -174,3 +174,43 @@ def get_num_transactions_per_date():
 
 
 
+def simulate_week_fast():
+    print("Simulate week fast Start")
+    starting_time = get_last_transaction_timestamp()
+    current_timestamp = get_last_transaction_timestamp()
+    ending_time = starting_time + timedelta(days=7)
+    print("We need to start the creation of the transactions from", starting_time)
+    print("We need to stop the creation of the transactions when we surpass", starting_time + timedelta(days=7))
+
+    transactions = []
+    while current_timestamp < ending_time:
+        print(current_timestamp)
+
+        if current_timestamp.weekday() >= 5:
+            delta_seconds = random.randint(60, 1800)
+        else:
+            delta_seconds = random.randint(60, 3600)
+
+        current_timestamp += timedelta(seconds=delta_seconds)
+
+        tx_type = random.choice(types)
+
+        transactions.append({
+            "transaction_id": str(uuid.uuid4()),
+            "timestamp": current_timestamp.isoformat(),
+            "account_id": random.choice(accounts),
+            "amount": random_amount(tx_type),
+            "transaction_type": tx_type,
+            "is_fraud": False
+        })
+
+    response = (
+        supabase
+        .table("transactions")
+        .insert(transactions)
+        .execute()
+    )
+
+    print(response)
+    print("Simulate week fast End")
+

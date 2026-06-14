@@ -21,45 +21,71 @@ st.set_page_config(
 
 st.title("Transaction Dashboard (Next Day Transaction)")
 
-st.metric("Numero Transazioni", get_total_number_of_transactions())
-
-if len(df) != 0:
-    st.metric(
-        "Volume Totale",
-        f"€ {df['amount'].sum():,.2f}"
-    )
-
-    st.subheader("Singola transazione")
-
-    single_volume = (
-        df.groupby("timestamp")["amount"]
-        .sum()
-        .reset_index()
-        .sort_values("timestamp")
-    )
-
-    st.bar_chart(
-        single_volume.set_index("timestamp")
-    )
+st.metric("Numero Transazioni Totali", get_total_number_of_transactions())
 
 
-    # --------------------------------------------
-    st.subheader("Numero transazioni giornaliere")
+st.sidebar.header("Simulation")
 
-    daily_volume = get_num_transactions_per_date()
-
-    st.bar_chart(
-        daily_volume.set_index("date")
-    )
-
-if st.button("Simulate transactions"):
-    st.write("Creating transaction")
+if st.sidebar.button("Single Transaction"):
     add_transaction()
 
-if st.button("Simulate a day"):
-    st.write("Creating transactions")
+if st.sidebar.button("Simulate Day"):
     simulate_day()
 
-if st.button("Simulate a day fast"):
-    st.write("Creating transactions")
+if st.sidebar.button("Simulate Day Fast"):
     simulate_day_fast()
+
+if st.sidebar.button("Simulate Week Fast"):
+    simulate_week_fast()
+
+st.metric(
+    "Volume Totale",
+    f"€ {df['amount'].sum():,.2f}"
+)
+
+st.subheader("Grafico Singola transazione")
+
+single_volume = (
+    df.groupby("timestamp")["amount"]
+    .sum()
+    .reset_index()
+    .sort_values("timestamp")
+)
+
+st.bar_chart(
+    single_volume.set_index("timestamp")
+)
+
+
+# --------------------------------------------
+st.subheader("Grafico Numero transazioni giornaliere")
+
+daily_volume = get_num_transactions_per_date()
+
+st.bar_chart(
+    daily_volume.set_index("date")
+)
+
+
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    if st.button("Simulate transactions"):
+        st.write("Creating transaction")
+        add_transaction()
+
+with col2:
+    if st.button("Simulate a day"):
+        st.write("Creating transactions")
+        simulate_day()
+
+with col3:
+    if st.button("Simulate a day fast"):
+        st.write("Creating transactions")
+        simulate_day_fast()
+
+with col4:
+    if st.button("Simulate a week fast"):
+        st.write("Creating transactions")
+        simulate_week_fast()
