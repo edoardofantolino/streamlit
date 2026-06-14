@@ -85,3 +85,15 @@ def get_last_transaction_timestamp():
         return last_transaction
     return datetime.now() - timedelta(days=30)
 
+
+def get_total_number_of_transactions():
+    total_number_of_transactions = (
+        supabase
+        .rpc("get_tot_num_transactions")
+        .execute()
+        )
+
+    return total_number_of_transactions.data[0]["total_number_of_transactions"]
+
+
+print(get_total_number_of_transactions())

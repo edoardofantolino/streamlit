@@ -26,7 +26,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Transaction Dashboard")
+st.title("Transaction Dashboard (Next Transaction)")
 
 st.metric("Numero Transazioni", len(df))
 
