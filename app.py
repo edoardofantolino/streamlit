@@ -19,10 +19,18 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Transaction Dashboard (Next Day Transaction)")
+st.title("Transaction Dashboard (Next Week Transactions)")
 
-st.metric("Numero Transazioni Totali", get_total_number_of_transactions())
+col_tot_tr, col_tot_vol = st.columns(2)
 
+with col_tot_tr:
+    st.metric("Numero Transazioni Totali", get_total_number_of_transactions())
+
+with col_tot_vol:
+    st.metric(
+        "Volume Totale",
+        f"€ {get_total_volume():,.2f}"
+    )
 
 st.sidebar.header("Simulation")
 
@@ -38,10 +46,6 @@ if st.sidebar.button("Simulate Day Fast"):
 if st.sidebar.button("Simulate Week Fast"):
     simulate_week_fast()
 
-st.metric(
-    "Volume Totale",
-    f"€ {df['amount'].sum():,.2f}"
-)
 
 st.subheader("Grafico Singola transazione")
 
@@ -52,10 +56,11 @@ single_volume = (
     .sort_values("timestamp")
 )
 
-st.bar_chart(
-    single_volume.set_index("timestamp")
-)
+last_week_volume = get_transactions_lastweek()
 
+st.bar_chart(
+    last_week_volume.set_index("timestamp")
+)
 
 # --------------------------------------------
 st.subheader("Grafico Numero transazioni giornaliere")

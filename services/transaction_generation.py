@@ -23,6 +23,29 @@ def get_all_transactions():
     return supabase.table("transactions").select("*").execute()
 
 
+def get_transactions_lastweek():
+    response = (
+        supabase
+        .rpc("get_last_week_transactions")
+        .execute()
+        )
+
+    data = response.data
+    df = pd.DataFrame(data)
+    print(df)
+    return df
+
+get_transactions_lastweek()
+
+def get_total_volume():
+    total_volume = (
+        supabase
+        .rpc("get_tot_vol")
+        .execute()
+        )
+
+    return total_volume.data
+
 def random_amount(tx_type):
 
     valid_or_not = random.randint(0,100)
