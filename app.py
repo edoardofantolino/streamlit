@@ -12,7 +12,7 @@ df = pd.DataFrame(data)
 
 
 st_autorefresh(
-    interval=5000,
+    interval=60000,
     key="refresh"
 )
 
