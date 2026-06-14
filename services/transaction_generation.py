@@ -35,7 +35,18 @@ def get_transactions_lastweek():
     print(df)
     return df
 
-get_transactions_lastweek()
+
+def get_volume_per_filiale():
+    response = (
+        supabase
+        .rpc("get_volume_per_filiale")
+        .execute()
+        )
+
+    data = response.data
+    df = pd.DataFrame(data)
+    return df
+
 
 def get_total_volume():
     total_volume = (
