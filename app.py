@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from streamlit_autorefresh import st_autorefresh
-from services.transaction_generation import *
+from services.db_functions import *
 
 
 response = get_all_transactions()
