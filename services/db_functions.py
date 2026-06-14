@@ -45,6 +45,7 @@ def get_volume_per_filiale():
 
     data = response.data
     df = pd.DataFrame(data)
+
     return df
 
 
@@ -55,7 +56,10 @@ def get_total_volume():
         .execute()
         )
 
-    return total_volume.data
+    total_volume = total_volume.data
+    if total_volume != None:
+        return total_volume
+    return 0
 
 
 def get_last_transaction_timestamp():

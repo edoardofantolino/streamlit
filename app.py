@@ -10,6 +10,7 @@ response = get_all_transactions()
 data = response.data
 df = pd.DataFrame(data)
 
+
 st_autorefresh(
     interval=5000,
     key="refresh"
@@ -20,7 +21,6 @@ st.set_page_config(
     layout="wide"
 )
 
-import streamlit as st
 
 st.markdown(
     f"""
@@ -50,6 +50,14 @@ if st.sidebar.button("Simulate Day Fast"):
 if st.sidebar.button("Simulate Week Fast"):
     simulate_week_fast()
 
+if st.sidebar.button("Simulate Single High Value Fraud"):
+    single_anomalous_transaction_high_amount()
+
+if st.sidebar.button("Simulate Multiple Low Value Fraud"):
+    multiple_anomalous_transactions_low_amount()
+
+
+
 col_tot_tr, col_tot_vol = st.columns(2)
 
 with col_tot_tr:
@@ -61,53 +69,65 @@ with col_tot_vol:
         f"€ {get_total_volume():,.2f}"
     )
 
+
+
+
 st.title("Top Filiali")
 
-df = get_volume_per_filiale().sort_values("total_volume", ascending=False)
-df["filiale_name"] = pd.Categorical(
-    df["filiale_name"],
-    categories=df["filiale_name"],
-    ordered=True
-)
+df = get_volume_per_filiale()
 
-cols = st.columns(3)
-
-for i in range(3):
-    cols[i].metric(
-        label=df["filiale_name"].iloc[i],
-        value=f"€ {df['total_volume'].iloc[i]:,.2f}".replace(",", " "),
+if not df.empty:
+    df = df.sort_values("total_volume", ascending=False)
+    df["filiale_name"] = pd.Categorical(
+        df["filiale_name"],
+        categories=df["filiale_name"],
+        ordered=True
     )
 
-st.bar_chart(
-    df.set_index("filiale_name")["total_volume"]
-)
+    cols = st.columns(3)
+
+    for i in range(3):
+        cols[i].metric(
+            label=df["filiale_name"].iloc[i],
+            value=f"€ {df['total_volume'].iloc[i]:,.2f}".replace(",", " "),
+        )
+
+    st.bar_chart(
+        df.set_index("filiale_name")["total_volume"]
+    )
+else:
+    st.write("Nessuna transazione")
 
 
 
 
 st.subheader("Transazioni dell'ultima settimana")
 
-# single_volume = (
-#     df.groupby("timestamp")["amount"]
-#     .sum()
-#     .reset_index()
-#     .sort_values("timestamp")
-# )
-
 last_week_volume = get_transactions_lastweek()
 
-st.bar_chart(
-    last_week_volume.set_index("timestamp")
-)
+if(len(last_week_volume)) != 0:
+    st.bar_chart(
+        last_week_volume.set_index("timestamp")
+    )
+else:
+    st.write("Nessuna transazione")
+
+
 
 # --------------------------------------------
 st.subheader("Numero transazioni giornaliere")
 
 daily_volume = get_num_transactions_per_date()
 
-st.bar_chart(
-    daily_volume.set_index("date")
-)
+if (len(daily_volume)) != 0:
+    st.bar_chart(
+        daily_volume.set_index("date")
+    )
+else:
+    st.write("Nessuna transazione")
+
+
+
 
 
 

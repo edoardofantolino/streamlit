@@ -42,7 +42,7 @@ def random_amount(tx_type):
 
 def add_transaction():
     current_timestamp = db_functions.get_last_transaction_timestamp()
-    print("Last transaction:", current_timestamp)
+    # print("Last transaction:", current_timestamp)
 
     if current_timestamp.weekday() >= 5:  # Sabato o Domenica
         delta_seconds = random.randint(60, 1800)      # 1-30 minuti
@@ -83,7 +83,7 @@ def simulate_day():
 
     i = 0
     while db_functions.get_last_transaction_timestamp() < ending_time:
-        print("Add -", i)
+        # print("Add -", i)
         i+=1
         add_transaction()
         time.sleep(0.1)
@@ -102,7 +102,7 @@ def simulate_day_fast():
 
     transactions = []
     while current_timestamp < ending_time:
-        print(current_timestamp)
+        # print(current_timestamp)
 
         if current_timestamp.weekday() >= 5:
             delta_seconds = random.randint(60, 1800)
@@ -175,11 +175,11 @@ def single_anomalous_transaction_high_amount():
         "%Y/%m/%d %H:%M:%S"
     )
 
-    tx_type = random.choice(types)
+    tx_type = types[0]
 
     i_date = timestamp
     i_account = random.choice(accounts)
-    i_amount = random_amount(tx_type)
+    i_amount = -10000
     i_currency = random.choice(currencies)
 
     new_transaction = {
@@ -192,3 +192,35 @@ def single_anomalous_transaction_high_amount():
     }
 
     supabase.table("transactions").insert(new_transaction).execute()
+
+
+def multiple_anomalous_transactions_low_amount():
+    print("Simulate multiple anomalous transactions Start")
+    starting_time = db_functions.get_last_transaction_timestamp()
+    current_timestamp = db_functions.get_last_transaction_timestamp()
+    ending_time = starting_time + timedelta(days=1)
+    print("We need to start the creation of the transactions from", starting_time)
+    print("We need to stop the creation of the transactions when we surpass", starting_time + timedelta(seconds=300))
+
+    transactions = []
+    number_of_low_value_fraud_transactions = 0
+    while current_timestamp < ending_time:
+        # print(current_timestamp)
+        number_of_low_value_fraud_transactions += 1
+        delta_seconds = random.randint(1, 100)
+        current_timestamp += timedelta(seconds=delta_seconds)
+
+        tx_type = types[0]
+
+        transactions.append({
+            "transaction_id": str(uuid.uuid4()),
+            "timestamp": current_timestamp.isoformat(),
+            "account_id": random.choice(accounts),
+            "amount": -20,
+            "transaction_type": tx_type,
+            "is_fraud": False
+        })
+
+    supabase.table("transactions").insert(transactions).execute()
+    print("Number of low value fraud transactions", number_of_low_value_fraud_transactions)
+    print("Simulate multiple anomalous transactions End")
