@@ -59,3 +59,7 @@ if st.button("Simulate transactions"):
 if st.button("Simulate a day"):
     st.write("Creating transactions")
     simulate_day()
+
+if st.button("Simulate a day fast"):
+    st.write("Creating transactions")
+    simulate_day_fast()
