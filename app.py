@@ -19,7 +19,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Transaction Dashboard (Next Transaction)")
+st.title("Transaction Dashboard (Next Day Transaction)")
 
 st.metric("Numero Transazioni", get_total_number_of_transactions())
 
@@ -38,8 +38,18 @@ if len(df) != 0:
         .sort_values("timestamp")
     )
 
-    st.line_chart(
+    st.bar_chart(
         single_volume.set_index("timestamp")
+    )
+
+
+    # --------------------------------------------
+    st.subheader("Numero transazioni giornaliere")
+
+    daily_volume = get_num_transactions_per_date()
+
+    st.bar_chart(
+        daily_volume.set_index("date")
     )
 
 if st.button("Simulate transactions"):
@@ -48,4 +58,4 @@ if st.button("Simulate transactions"):
 
 if st.button("Simulate a day"):
     st.write("Creating transactions")
-    # add_transaction()
+    simulate_day()

@@ -2,6 +2,8 @@ import uuid
 from datetime import datetime, timedelta
 from supabase import create_client
 import random
+import time
+import pandas as pd
 
 url = "https://yinthengfapdhtvgidoi.supabase.co"
 key = "sb_publishable_P4Py0xWkBg2YAU5Wm0fpcw_Nj0--Ju9"
@@ -97,5 +99,40 @@ def get_total_number_of_transactions():
 
     return total_number_of_transactions.data[0]["total_number_of_transactions"]
 
+def simulate_day():
+    print("Simulate day Start")
+    starting_time = get_last_transaction_timestamp()
+    ending_time = starting_time + timedelta(days=1)
+    print("We need to start the creation of the transactions from", starting_time)
+    print("We need to stop the creation of the transactions when we surpass", starting_time + timedelta(days=1))
 
-print(get_total_number_of_transactions())
+    i = 0
+    while get_last_transaction_timestamp() < ending_time:
+        print("Add -", i)
+        i+=1
+        add_transaction()
+        time.sleep(0.1)
+
+    print("Simulate day End")
+
+
+def get_num_transactions_per_date():
+    total_number_of_transactions = (
+        supabase
+        .rpc("get_num_transaction_per_day")
+        .execute()
+        )
+    
+    total_number_of_transactions = total_number_of_transactions.data
+    df_total_number_of_transactions = pd.DataFrame(total_number_of_transactions)
+    print(df_total_number_of_transactions)
+    
+    return df_total_number_of_transactions
+
+get_num_transactions_per_date()
+# tot_num_tr_per_day = get_num_transactions_per_date()
+# data = tot_num_tr_per_day.data
+# df = pd.DataFrame(data)
+# print(tot_num_tr_per_day)
+# print(df)
+
