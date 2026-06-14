@@ -33,7 +33,6 @@ def get_transactions_lastweek():
 
     data = response.data
     df = pd.DataFrame(data)
-    print(df)
     return df
 
 
@@ -91,7 +90,6 @@ def get_num_transactions_per_date():
     
     total_number_of_transactions = total_number_of_transactions.data
     df_total_number_of_transactions = pd.DataFrame(total_number_of_transactions)
-    print(df_total_number_of_transactions)
     
     return df_total_number_of_transactions
 
