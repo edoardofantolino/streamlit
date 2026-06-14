@@ -28,7 +28,7 @@ st.set_page_config(
 
 st.title("Transaction Dashboard (Next Transaction)")
 
-st.metric("Numero Transazioni", len(df))
+st.metric("Numero Transazioni", get_total_number_of_transactions())
 
 if len(df) != 0:
     st.metric(
