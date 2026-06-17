@@ -497,6 +497,41 @@ add_reason(df, mask, "NULL_CUSTOMER_ID")""",
         language="python",
     )
 
+
+with st.expander("Estratto della Risposta - Fase di verifica della validità dei record"):
+    st.code("""
+Record validi
+      Transaction_ID Transaction_Date Customer_ID    Product_Name  Quantity  ... Payment_Method Transaction_Status row_status reject_reason Price_clean
+13             T0014       2020-06-19       C2992  Coffee Machine     696.0  ...     creditcard             Failed      VALID            []  905.514730
+24             T0025       2022-11-18       C4985          Tablet     114.0  ...         PayPal                NaN      VALID            []  276.936320
+27             T0028       2025-02-30       C3025            Smar       7.0  ...         PayPal           complete      VALID            []  797.340000
+34             T0035       2022-07-25       C2579  Coffee Machine     485.0  ...    credit card          Completed      VALID            []  970.280000
+52             T0053       2022-07-22       C1077          Laptop     559.0  ...    credit card             Failed      VALID            []  154.185054
+...              ...              ...         ...             ...       ...  ...            ...                ...        ...           ...         ...
+99978         T99979       2025-02-30       C4733      Smartphone       3.0  ...         PayPal            Pending      VALID            []  588.007874
+99986         T99987       2024-07-11        C173     Coffee Mach       7.0  ...    Credit Card                NaN      VALID            []  826.040830
+99988         T99989       2025-02-30        C011         Smartph     542.0  ...    credit card             Failed      VALID            []  460.251987
+99990         T99991       2023-13-01       C4555             Tab       2.0  ...        pay pal             Failed      VALID            []  131.036869
+99991         T99992       2022-11-25        C836  Coffee Machine       3.0  ...     creditcard          completed      VALID            []  312.026301
+
+[17671 rows x 11 columns]
+Record non validi
+      Transaction_ID Transaction_Date Customer_ID    Product_Name  ...  Transaction_Status row_status                                  reject_reason Price_clean
+0              T0001       2024-08-02       C2205      Headphones  ...                 NaN    INVALID                            [NEGATIVE_QUANTITY]  420.210000
+1              T0002       2020-02-10       C3156         Coffee   ...             Pending    INVALID                               [NEGATIVE_PRICE] -445.342025
+2              T0003       2025-02-30       C2919          Tablet  ...           completed    INVALID                            [NEGATIVE_QUANTITY]  810.993012
+3              T0004       2020-08-17       C3009             Tab  ...             Pending    INVALID                            [NEGATIVE_QUANTITY]  868.608341
+4              T0005       2025-02-30       C3488  Coffee Machine  ...           completed    INVALID            [NEGATIVE_QUANTITY, NEGATIVE_PRICE] -763.122449
+...              ...              ...         ...             ...  ...                 ...        ...                                            ...         ...
+99995            NaN       2021-10-06       C1743      Headphones  ...            complete    INVALID  [DUPLICATE_TRANSACTION_ID, NEGATIVE_QUANTITY]  240.003238
+99996         T99997       2024-08-25       C4830      Smartphone  ...           Completed    INVALID                                [NULL_QUANTITY]  503.829517
+99997         T99998       2023-13-01        C280          Laptop  ...           completed    INVALID                [NEGATIVE_QUANTITY, NULL_PRICE]         NaN
+99998         T99999       2020-07-12       C4059      Headphones  ...           Completed    INVALID                                   [NULL_PRICE]         NaN
+99999        T100000       2023-10-04       C1805          Tablet  ...              Failed    INVALID                     [DUPLICATE_TRANSACTION_ID]   89.374023
+    """, language="text",
+)
+
+
 st.header("4. Normalizzazione e record recuperabili")
 st.markdown(
     """
@@ -510,7 +545,7 @@ st.markdown(
 st.info(
     "Alcune anomalie non sono veri errori, ma solo variazioni di scrittura o dati sporchi correggibili.")
 
-with st.expander("Esempi di normalizzazione"):
+with st.expander("Estratto del Codice - Esempi di Normalizzazione"):
     st.code(
         """df_valid["Payment_Method"] = (
     df_valid["Payment_Method"]
@@ -528,6 +563,29 @@ df_valid["Transaction_Status"] = (
 )
 """,
         language="python",
+    )
+
+
+with st.expander("Estratto della Risposta - Esempi di Normalizzazione"):
+    st.code(
+"""
+Distribuzione dei valori Payment Method prima della Normalizzazione
+Payment_Method
+pay pal        2558
+creditcard     2557
+Credit Card    2555
+PayPal         2533
+Cash           2512
+PayPal         2486
+credit card    2470
+
+Distribuzione dei valori Payment Method dopo la Normalizzazione
+Payment_Method
+credit card    7582
+paypal         7577
+cash           2512
+""",
+        language="text",
     )
 
 st.header("5. Salvataggio finale")
