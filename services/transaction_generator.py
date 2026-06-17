@@ -225,5 +225,3 @@ def multiple_anomalous_transactions_low_amount():
     supabase.table("transactions").insert(transactions).execute()
     print("Number of low value fraud transactions", number_of_low_value_fraud_transactions)
     print("Simulate multiple anomalous transactions End")
-
-multiple_anomalous_transactions_low_amount()

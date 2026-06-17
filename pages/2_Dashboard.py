@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-# from streamlit_autorefresh import st_autorefresh
 from services.db_functions import *
 from services.transaction_generator import *
 
@@ -10,11 +8,6 @@ response = get_all_transactions()
 data = response.data
 df = pd.DataFrame(data)
 
-
-# st_autorefresh(
-#     interval=60000,
-#     key="refresh"
-# )
 
 st.set_page_config(
     page_title="Dashboard",
@@ -26,7 +19,7 @@ st.set_page_config(
 st.markdown(
     f"""
     <div style="display:flex; align-items:center; gap:6px;">
-        <div style="font-weight:600;">Current time:</div>
+        <div style="font-weight:600;">Current simulation time:</div>
         <div style="color:gray;">
             {db_functions.get_last_transaction_timestamp()}
         </div>
