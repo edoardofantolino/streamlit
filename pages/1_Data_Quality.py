@@ -640,3 +640,4 @@ with col_y:
         - `Product_Name` passa da molte abbreviazioni a sole 5 categorie finali.
         """
     )
+

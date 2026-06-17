@@ -59,7 +59,6 @@ if st.sidebar.button("Simulate Multiple Low Value Fraud"):
     st.rerun()
 
 
-
 col_tot_tr, col_tot_vol = st.columns(2)
 
 with col_tot_tr:
