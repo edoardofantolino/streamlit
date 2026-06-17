@@ -359,15 +359,7 @@ st.markdown(
     - estrae tutti i file nella directory `data`;
     """
 )
-with st.expander("Cosa succede nel codice"):
-    st.code(
-        """zip_path = "./archive.zip"
-extract_path = "data"
 
-with zipfile.ZipFile(zip_path, "r") as zip_ref:
-    zip_ref.extractall(extract_path)""",
-        language="python",
-    )
 
 st.header("2. Lettura del CSV e analisi esplorativa")
 st.markdown(
