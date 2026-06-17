@@ -1,6 +1,13 @@
 import streamlit as st
 
+st.set_page_config(
+    page_title="Spiegazione script Data Quality",
+    page_icon="📊",
+    layout="wide",
+)
+
 st.title("Data Quality")
+st.caption("Pagina statica per raccontare cosa fa lo script di estrazione, analisi preliminare e data quality.")
 
 st.subheader("Requisito")
 st.write("""
@@ -320,14 +327,7 @@ print("FINE")""",
     )
 
 
-st.set_page_config(
-    page_title="Spiegazione script Data Quality",
-    page_icon="📊",
-    layout="wide",
-)
-
 st.title("Spiegazione dello script Python")
-st.caption("Pagina statica per raccontare cosa fa lo script di estrazione, analisi preliminare e data quality.")
 
 st.markdown(
     """
@@ -618,7 +618,7 @@ with col_x:
     st.subheader("Cosa si vede subito")
     st.markdown(
         """
-        Il dataset è molto sporco e il problema principale è la qualità del contenuto.
+        Il dataset originale presenta diverse criticità e il problema principale è la qualità del contenuto.
        
         Le anomalie più forti sono:
         - `Transaction_ID` duplicati o nulli;
