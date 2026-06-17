@@ -21,7 +21,7 @@ st.markdown(
     <div style="display:flex; align-items:center; gap:6px;">
         <div style="font-weight:600;">Current simulation time:</div>
         <div style="color:gray;">
-            {db_functions.get_last_transaction_timestamp()}
+            {db_functions.get_last_transaction_timestamp().strftime("%d-%m-%Y %H:%M:%S")}
         </div>
     </div>
     """,
