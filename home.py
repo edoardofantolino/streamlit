@@ -1,9 +1,4 @@
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-# from streamlit_autorefresh import st_autorefresh
-from services.db_functions import *
-from services.transaction_generator import *
 
 
 st.markdown("Seleziona una sezione:")
