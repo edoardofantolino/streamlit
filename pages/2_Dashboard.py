@@ -17,7 +17,8 @@ df = pd.DataFrame(data)
 # )
 
 st.set_page_config(
-    page_title="Transaction Dashboard",
+    page_title="Dashboard",
+    page_icon="📈",
     layout="wide"
 )
 
@@ -34,9 +35,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("Transaction Dashboard (Next Week Transactions)")
+st.title("Dashboard")
 
-st.sidebar.header("Simulation")
+st.sidebar.header("Simulation Board")
 
 if st.sidebar.button("Single Transaction"):
     add_transaction()
@@ -79,6 +80,13 @@ if fraud_count > 0:
     else:
         st.error(f"🚨 {fraud_count} transazioni ad Alto Volume Anomale")
 
+lv_fraud_count = count_low_value_frauds()
+print(lv_fraud_count)
+if lv_fraud_count > 0:
+    if lv_fraud_count == 1:
+        st.error("🚨 Una frode a basso volume e alta frequenza")
+    else:
+        st.error(f"🚨 {lv_fraud_count} frodi a Basso Volume e Alta Frequenza")
 
 st.title("Top Filiali")
 
@@ -124,25 +132,7 @@ else:
     st.write("Nessuna transazione")
 
 
-
-# --------------------------------------------
-st.subheader("Numero transazioni giornaliere")
-
-daily_volume = get_num_transactions_per_date()
-
-if (len(daily_volume)) != 0:
-    st.bar_chart(
-        daily_volume.set_index("date")
-    )
-else:
-    st.write("Nessuna transazione")
-
-
-
-
-
-
-bottom_col1, bottom_col2, bottom_col3, bottom_col4 = st.columns(4)
+bottom_col1, bottom_col2, bottom_col3, bottom_col4, bottom_col5 = st.columns(5)
 
 with bottom_col1:
     if st.button("Simulate transaction"):
@@ -163,3 +153,22 @@ with bottom_col4:
     if st.button("Simulate HV Fraud"):
         single_anomalous_transaction_high_amount()
         st.rerun()
+
+with bottom_col5:
+    if st.button("Simulate LV Fraud"):
+        multiple_anomalous_transactions_low_amount()
+        st.rerun()
+
+# --------------------------------------------
+st.subheader("Numero transazioni giornaliere")
+
+daily_volume = get_num_transactions_per_date()
+
+if (len(daily_volume)) != 0:
+    st.bar_chart(
+        daily_volume.set_index("date")
+    )
+else:
+    st.write("Nessuna transazione")
+
+

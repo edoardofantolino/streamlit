@@ -2,11 +2,11 @@ import streamlit as st
 
 st.set_page_config(
     page_title="ETL CI CD",
-    page_icon="📊",
+    page_icon="⚙️",
     layout="wide",
 )
 
-st.title("Pipeline ETL con Test Automatici e CI/CD")
+st.title("TO DO Pipeline ETL con Test Automatici e CI/CD")
 
 st.markdown("""
 L'obiettivo di questo progetto è realizzare una pipeline ETL affidabile per
@@ -26,10 +26,7 @@ verificata automaticamente tramite GitHub Actions.
 st.subheader("Obiettivi")
 
 st.markdown("""
-- Acquisire dati da file CSV
-- Validare la qualità dei dati
-- Correggere e standardizzare valori inconsistenti
-- Generare dataset puliti e pronti all'uso
+- Estrarre i dati e generare dataset puliti e pronti all'uso
 - Automatizzare i controlli tramite test unitari
 - Eseguire i test automaticamente ad ogni modifica del codice
 - Monitorare l'esecuzione della pipeline attraverso un sistema di logging strutturato
@@ -43,7 +40,7 @@ st.code("""
             CSV INPUT
                  │
                  ▼
-       DATA QUALITY CHECKS
+       DATA QUALITY CHECKS,
    DATA CLEANING e STANDARDIZATION
                  │
         ┌────────┴────────┐

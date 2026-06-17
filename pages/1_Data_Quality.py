@@ -357,7 +357,6 @@ st.markdown(
     In pratica:
     - apre l'archivio ZIP;
     - estrae tutti i file nella directory `data`;
-    - stampa un messaggio di conferma a console.
     """
 )
 with st.expander("Cosa succede nel codice"):

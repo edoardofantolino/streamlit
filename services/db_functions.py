@@ -44,7 +44,18 @@ def count_high_withdrawal_anomalies():
         return totl_hv_anomalies
     return 0
 
-print(count_high_withdrawal_anomalies())
+
+def count_low_value_frauds():
+    lv_anomalies = (
+        supabase
+        .rpc("get_low_value_fraud_detection")
+        .execute()
+        )
+
+    lv_anomalies = lv_anomalies.data
+    if len(lv_anomalies) != None:
+        return len(lv_anomalies)
+    return 0
 
 
 def get_volume_per_filiale():
