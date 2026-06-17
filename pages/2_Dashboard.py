@@ -72,6 +72,29 @@ if fraud_count > 0:
         st.error("🚨 Una transazione ad Alto Volume Anomala")
     else:
         st.error(f"🚨 {fraud_count} transazioni ad Alto Volume Anomale")
+    
+    st.caption(
+    """
+    Sono considerati anomali i prelievi il cui importo è superiore
+    a 8 volte la media dei prelievi effettuati dallo stesso conto.
+    """
+    )
+
+    with st.expander("Visualizza query SQL"):
+        st.code("""
+    WITH avg_withdrawal_table AS(
+        SELECT account_id, AVG(amount) AS avg_withdrawal
+        FROM transactions
+        WHERE transaction_type = 'withdrawal'
+        GROUP BY account_id
+    )
+
+    SELECT COUNT(*)
+    FROM avg_withdrawal_table AS aw
+    INNER JOIN transactions AS t
+    ON t.account_id = aw.account_id
+    WHERE transaction_type = 'withdrawal' AND amount < 8 * avg_withdrawal
+    """, language="sql")
 
 lv_fraud_count = count_low_value_frauds()
 print(lv_fraud_count)
@@ -80,6 +103,44 @@ if lv_fraud_count > 0:
         st.error("🚨 Una frode a basso volume e alta frequenza")
     else:
         st.error(f"🚨 {lv_fraud_count} frodi a Basso Volume e Alta Frequenza")
+
+    st.caption("""
+    La query identifica conti che hanno effettuato più di 10 transazioni
+    nell'arco di 5 minuti.
+    """)
+
+    with st.expander("Visualizza query SQL"):
+        st.code("""
+        WITH tx_window AS (
+            SELECT
+                account_id,
+                "timestamp",
+                SUM(amount) OVER (
+                    PARTITION BY account_id
+                    ORDER BY "timestamp"
+                    RANGE BETWEEN INTERVAL '5 minutes' PRECEDING
+                        AND CURRENT ROW
+                ) AS tx_amount,
+                COUNT(*) OVER (
+                    PARTITION BY account_id
+                    ORDER BY "timestamp"
+                    RANGE BETWEEN INTERVAL '5 minutes' PRECEDING
+                        AND CURRENT ROW
+                ) AS tx_count
+            FROM transactions
+        )
+
+        SELECT
+            account_id,
+            DATE("timestamp") AS fraud_date,
+            MAX(tx_amount) AS fraud_amount,
+            MAX(tx_count) AS num_transactions
+        FROM tx_window
+        WHERE tx_count > 10
+        GROUP BY account_id, DATE("timestamp");
+        """, language="sql")
+
+
 
 st.title("Top Filiali")
 
@@ -107,6 +168,25 @@ if not df.empty:
     st.bar_chart(
         df.set_index("filiale_name")["total_volume"]
     )
+
+    st.caption(
+        "Il grafico mostra il volume totale delle transazioni aggregate per filiale."
+    )
+
+    with st.expander("Visualizza query SQL"):
+        st.code("""
+    SELECT
+        f.filiale_name,
+        SUM(t.amount) AS total_volume
+    FROM transactions t
+    JOIN accounts a
+        ON t.account_id = a.account_id
+    JOIN filiali f
+        ON a.filiale_id = f.filiale_id
+    GROUP BY f.filiale_name
+    ORDER BY total_volume DESC;
+    """, language="sql")
+        
 else:
     st.write("Nessuna transazione")
 
