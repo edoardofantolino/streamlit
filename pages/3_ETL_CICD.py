@@ -6,7 +6,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("TO DO Pipeline ETL con Test Automatici e CI/CD")
+st.title("Pipeline ETL con Test Automatici e CI/CD")
 
 st.markdown("""
 L'obiettivo di questo progetto è realizzare una pipeline ETL affidabile per
@@ -35,8 +35,11 @@ st.markdown("""
 """)
 
 
-st.subheader("Pipeline")
-st.code("""
+col1, col2 = st.columns(2)
+
+with col1:
+       st.subheader("Pipeline")
+       st.code("""
             CSV INPUT
                  │
                  ▼
@@ -56,6 +59,35 @@ st.code("""
                  │
                  ▼
        GITHUB ACTIONS CICD
+""")
+
+with col2:
+       st.subheader("Architettura")
+       st.code("""
+bank-etl2/
+
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── src/
+│   ├── generator/
+│   ├── etl/
+│   │   ├── extract.py
+│   │   ├── transform.py
+│   │   ├── load.py
+│   │   └── pipeline.py
+│   │
+│   ├── analytics/
+│   ├── services/
+│   ├── logger.py
+│   └── config.py
+│
+├── tests/
+├── logs/
+├── .github/
+├── requirements.txt
+└── README.md
 """)
 
 
