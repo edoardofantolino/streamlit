@@ -75,8 +75,8 @@ if fraud_count > 0:
     
     st.caption(
     """
-    Sono considerati anomali i prelievi il cui importo è superiore
-    a 8 volte la media dei prelievi effettuati dallo stesso conto.
+    Sono considerate anomale le transazioni il cui importo è superiore
+    a 8 volte la media delle transazioni effettuati dallo stesso conto.
     """
     )
 
