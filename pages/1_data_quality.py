@@ -618,8 +618,7 @@ with col_x:
     st.subheader("Cosa si vede subito")
     st.markdown(
         """
-        Il dataset è molto sporco, ma non è disorganizzato a livello strutturale: le colonne sono presenti,
-        i tipi sono per lo più leggibili e il problema principale è la qualità del contenuto.
+        Il dataset è molto sporco e il problema principale è la qualità del contenuto.
        
         Le anomalie più forti sono:
         - `Transaction_ID` duplicati o nulli;
