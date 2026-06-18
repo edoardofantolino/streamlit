@@ -9,7 +9,7 @@ st.set_page_config(
 st.title("Progetto per CRA")
 
 st.markdown("""
-Questo progetto è composto da diversi moduli di data engineering per la gestionei di dati bancari:
+Questo progetto è composto da diversi moduli di data engineering per la gestione di dati bancari:
 - [Python] trasformazioni, pulizia e controlli di qualità sui dati
 - [SQL] dashboard di monitoraggio
 - [Git - CICD] test locali e workflow su GitHub
