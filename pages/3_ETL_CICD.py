@@ -217,7 +217,7 @@ def test_transaction_id_unique():
 
 
 
-with st.expander("Estratto della Risposta dell'esecuzione dei test - Test Automatici"):
+with st.expander("Esempio di test con esito positivo - Test Automatici"):
     st.code(
 """
 (venve) PS D:\software\visual studio code\VS projects\etl_project02\bank-etl2> pytest\n
@@ -232,6 +232,39 @@ collected 4 items
 test\test_transform.py ....                                                                                                             [100%]
 
 ============================================================= 4 passed in 0.72s ==============================================================
+""", language="text"
+    )
+
+
+with st.expander("Esempio di test fallito - Test Automatici"):
+    st.code(
+"""
+(venve) PS D:\software\visual studio code\VS projects\etl_project02\bank-etl2> pytest
+===================================================================== test session starts =====================================================================
+platform win32 -- Python 3.11.5, pytest-9.0.3, pluggy-1.6.0
+rootdir: D:\software\visual studio code\VS projects\etl_project02\bank-etl2
+configfile: pytest.ini
+testpaths: test
+plugins: anyio-4.13.0
+collected 4 items                                                                                                                                              
+
+test\test_transform.py ..F.                                                                                                                              [100%]
+
+========================================================================== FAILURES ===========================================================================
+_________________________________________________________________ test_transaction_id_unique __________________________________________________________________
+
+    def test_transaction_id_unique():
+        df = pd.DataFrame(data)
+        df = clean_date(df)
+    
+        # assert df["transaction_id"].is_unique
+>       assert False
+E       assert False
+
+test\test_transform.py:47: AssertionError
+=================================================================== short test summary info ===================================================================
+FAILED test/test_transform.py::test_transaction_id_unique - assert False
+================================================================= 1 failed, 3 passed in 4.35s =================================================================
 """, language="text"
     )
 
