@@ -217,7 +217,7 @@ def test_transaction_id_unique():
 
 
 
-with st.expander("Estratto della Risposta File di Test - Test Automatici"):
+with st.expander("Estratto della Risposta dell'esecuzione dei test - Test Automatici"):
     st.code(
 """
 (venve) PS D:\software\visual studio code\VS projects\etl_project02\bank-etl2> pytest\n
