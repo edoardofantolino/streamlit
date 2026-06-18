@@ -72,20 +72,17 @@ bank-etl2/
 │
 ├── src/
 │   ├── generator/
-│   ├── etl/
-│   │   ├── extract.py
-│   │   ├── transform.py
-│   │   ├── load.py
-│   │   └── pipeline.py
-│   │
-│   ├── analytics/
-│   ├── services/
-│   ├── logger.py
-│   └── config.py
+│   ├── extract.py
+│   ├── transform.py
+│   ├── load.py
+│   ├── main.py    
+│   └── logger.py
 │
 ├── tests/
 ├── logs/
-├── .github/
+│   └── etl.log            
+├── .github/workflows/
+│   └── ci.yml                
 ├── requirements.txt
 └── README.md
 """)
