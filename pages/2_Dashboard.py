@@ -19,7 +19,7 @@ st.set_page_config(
 st.markdown(
     f"""
     <div style="display:flex; align-items:center; gap:6px;">
-        <div style="font-weight:600;">Current simulation time:</div>
+        <div style="font-weight:600;">Data e ora della simulazione attuale:</div>
         <div style="color:gray;">
             {db_functions.get_last_transaction_timestamp().strftime("%d-%m-%Y %H:%M:%S")}
         </div>
@@ -29,6 +29,7 @@ st.markdown(
 )
 
 st.title("Dashboard")
+st.caption("Codice completo al seguente link: https://github.com/edoardofantolino/streamlit")
 
 st.sidebar.header("Simulation Board")
 

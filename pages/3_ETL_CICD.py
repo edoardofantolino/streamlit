@@ -7,6 +7,7 @@ st.set_page_config(
 )
 
 st.title("Pipeline ETL con Test Automatici e CI/CD")
+st.caption("Codice completo al seguente link: https://github.com/edoardofantolino/bank-etl2/")
 
 st.markdown("""
 L'obiettivo di questo progetto è realizzare una pipeline ETL affidabile per
@@ -65,26 +66,30 @@ with col2:
        st.subheader("Architettura")
        st.code("""
 bank-etl2/
-
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── src/
-│   ├── generator/
-│   ├── extract.py
-│   ├── transform.py
-│   ├── load.py
-│   ├── main.py    
-│   └── logger.py
-│
-├── tests/
-├── logs/
-│   └── etl.log            
-├── .github/workflows/
-│   └── ci.yml                
-├── requirements.txt
-└── README.md
+       │
+       ├── data/
+       │   ├── raw/
+       │   └── processed/
+       │
+       ├── src/
+       │   ├── generator/
+       │   ├── extract.py
+       │   ├── transform.py
+       │   ├── load.py
+       │   ├── main.py    
+       │   └── logger.py
+       │
+       ├── tests/
+       │   └──test_transform.py
+       │
+       ├── logs/
+       │   └── etl.log      
+       │      
+       ├── .github/workflows/
+       │   └── ci.yml  
+       │              
+       ├── requirements.txt
+       └── README.md
 """)
 
 
@@ -95,6 +100,85 @@ st.markdown("""
 - Pytest
 - Git e GitHub Actions
 """)
+
+
+st.subheader("Logger")
+
+with st.expander("Codice dell'orchestratore"):
+    st.code("""
+from extract import extract
+from transform import transform
+from load import load
+from logger import get_logger
+from pathlib import Path
+import uuid
+import pandas as pd
+from datetime import datetime
+
+ingestion_timestamp = datetime.utcnow()
+
+pipeline_run_id = str(uuid.uuid4())
+
+log = get_logger()
+log.info("ETL START")
+
+# 1. Extract
+df = extract("../data/raw/transactions.csv")
+log.info(f"Extracted rows: {len(df)}")
+
+# 2. Transform
+df_valid, df_invalid, df_rejected = transform(df, pipeline_run_id)
+
+log.info(f"Valid rows: {len(df_valid)}")
+log.info(f"Invalid rows: {len(df_invalid)}")
+
+# creation of etl_run info table
+df_run = pd.DataFrame({
+    "pipeline_run_id": [pipeline_run_id],
+    "raw_rows": [len(df)],
+    "valid_rows": [len(df_valid)],
+    "rejected_rows": [df_rejected["transaction_id"].nunique()],
+    "execution_timestamp": [ingestion_timestamp]
+})
+
+# 3. Load
+load(df_valid, df_rejected, df_run, "../bank.db")
+
+df_valid.to_csv("../data/output/valid_transactions.csv", index=False)
+df_rejected.to_csv("../data/output/rejected_transactions_reasons.csv", index=False)
+df_run.to_csv(
+    "../data/output/etl_runs.csv",
+    mode="a",
+    header=not Path("../data/output/etl_runs.csv").exists(),
+    index=False
+)
+
+log.info("Load completed")
+log.info("ETL END")
+""", language="python")
+
+with st.expander("Logger output in etl.log"):
+    st.code("""
+2026-06-16 16:12:15,685 - INFO - ETL START
+2026-06-16 16:12:17,794 - INFO - Extracted rows: 2000000
+2026-06-16 16:12:21,097 - INFO - Valid rows: 1980087
+2026-06-16 16:12:21,097 - INFO - Invalid rows: 19913
+2026-06-16 16:13:04,805 - INFO - Load completed
+2026-06-16 16:13:04,805 - INFO - ETL END
+2026-06-16 16:15:45,284 - INFO - ETL START
+2026-06-16 16:15:48,184 - INFO - Extracted rows: 2000000
+2026-06-16 16:15:52,663 - INFO - Valid rows: 1941107
+2026-06-16 16:15:52,663 - INFO - Invalid rows: 58893
+2026-06-16 16:16:37,388 - INFO - Load completed
+2026-06-16 16:16:37,388 - INFO - ETL END
+2026-06-16 17:04:55,654 - INFO - ETL START
+2026-06-16 17:04:59,281 - INFO - Extracted rows: 2500000
+2026-06-16 17:05:04,685 - INFO - Valid rows: 2426939
+2026-06-16 17:05:04,686 - INFO - Invalid rows: 73061
+2026-06-16 17:06:05,895 - INFO - Load completed
+2026-06-16 17:06:05,895 - INFO - ETL END
+2026-06-17 22:02:26,046 - INFO - ETL START
+""", language="text")
 
 
 st.subheader("Test Automatici in Locale")
