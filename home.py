@@ -1,15 +1,28 @@
 import streamlit as st
 
+st.title("Progetto per CRA")
 
-st.markdown("Seleziona una sezione:")
+st.markdown("""
+Questo progetto è composto da diversi moduli di data engineering per la gestionei di dati bancari:
+- [Python] trasformazioni, pulizia e controlli di qualità sui dati
+- [SQL] dashboard di monitoraggio
+- [Git - CICD] test locali e workflow su GitHub
+""")
+
+st.divider()
+
+st.markdown("### Seleziona una sezione:")
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.page_link("pages/1_Data_Quality.py", label="📊 Data Quality")
+    if st.button("📊 Data Quality", use_container_width=True):
+        st.switch_page("pages/1_Data_Quality.py")
 
 with col2:
-    st.page_link("pages/2_Dashboard.py", label="📈 Dashboard")
+    if st.button("📈 Dashboard", use_container_width=True):
+        st.switch_page("pages/2_Dashboard.py")
 
 with col3:
-    st.page_link("pages/3_ETL_CICD.py", label="⚙️ ETL & CI/CD")
+    if st.button("⚙️ ETL & CI/CD", use_container_width=True):
+        st.switch_page("pages/3_ETL_CICD.py")
